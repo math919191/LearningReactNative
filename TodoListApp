@@ -1,0 +1,66 @@
+import React, {Component} from 'react';
+import { Text, TextInput, View, Button, StyleSheet } from 'react-native';
+
+
+class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      formtask: '',
+      tasks: [],
+    }
+  }
+
+  handleChange = (task) => {
+    this.setState({formtask: task})
+  }
+
+  handleSubmit = () => {
+    let newTask = {"task":this.state.formtask, "completed":false}
+    this.setState({ formtask: " "})
+    this.setState({tasks: [...this.state.tasks, newTask]})
+  }
+  
+
+  render() { 
+    return (
+      <View>
+        <Text> To Do List </Text>
+          <TextInput
+          style={{height:40}}
+          placeholder="Enter a task"
+          onChangeText={newText => this.handleChange(newText)}
+          defaultValue={this.state.formtask}
+          />
+        <Button
+          title="Submit task"
+          color="blue"
+          onPress={() => this.handleSubmit()}
+        />
+
+        {this.state.tasks.map((task) => (
+          <Text style={task.completed ? styles.strike : styles.todo}
+              onPress={ () => (task.completed = !task.completed)}
+              >
+          {task.task}</Text>
+          ))}
+
+
+      </View>
+    );
+
+    
+  }
+  
+}
+
+const styles = StyleSheet.create({
+  strike: {
+    color: "green"
+  },
+  todo: {
+    color: "red",
+  }
+})
+
+export default App;
